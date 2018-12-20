@@ -2,6 +2,7 @@ package vhost
 
 import (
 	"bufio"
+	"bytes"
 	"net"
 	"net/http"
 )
@@ -31,6 +32,10 @@ func HTTP(conn net.Conn) (httpConn *HTTPConn, err error) {
 // Free sets Request to nil so that it can be garbage collected
 func (c *HTTPConn) Free() {
 	c.Request = nil
+}
+
+func (c *HTTPConn) Buffer() (buf *bytes.Buffer) {
+	return c.sharedConn.vhostBuf
 }
 
 func (c *HTTPConn) Host() string {
